@@ -334,8 +334,8 @@ sub main {
   ) || die "couldn't create nameserver object\n";
 
   # Drop the privileges if dyndns_user is set
-  if ($config["dyndns_user"]) {
-    drop_privileges($config["dyndns_user"]);
+  if ($config{"dyndns_user"}) {
+    drop_privileges($config{"dyndns_user"});
   }
 
   $ns->main_loop;
