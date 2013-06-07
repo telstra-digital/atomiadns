@@ -13,6 +13,7 @@ use SOAP::Lite;
 #use SOAP::Lite +trace => [ "debug" ];
 use Config::General;
 use MIME::Base64;
+use Privileges::Drop;
 
 my $conf = new Config::General( "/etc/atomiadns.conf");
 die("error parsing config") unless defined($conf);
@@ -331,6 +332,11 @@ sub main {
     UpdateHandler => \&update_handler,
     Verbose      => 0,
   ) || die "couldn't create nameserver object\n";
+
+  # Drop the privileges if dyndns_user is set
+  if ($config["dyndns_user"]) {
+    drop_privileges($config["dyndns_user"]);
+  }
 
   $ns->main_loop;
 }
